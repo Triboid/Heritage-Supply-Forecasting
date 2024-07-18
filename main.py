@@ -18,8 +18,8 @@ st.write("The dataset has a total of 12 entries")
 
 #Important plots for sales volume
 st.subheader("Important plots for Sales Volume: ")
-st.image("Images\Sales Volume vs Quarter.png",caption="Graph of Sales Volume vs Quarter. We can see peaks in the second quarter for each year, indicating seasonality ")
-st.image("Images\Sales Volume Stationarity.png",caption='We can see stationarity in sales volume after taking a first difference')
+st.image("Images/Sales Volume vs Quarter.png",caption="Graph of Sales Volume vs Quarter. We can see peaks in the second quarter for each year, indicating seasonality ")
+st.image("Images/Sales Volume Stationarity.png",caption='We can see stationarity in sales volume after taking a first difference')
 
 #Model for Sales Volume
 st.subheader("Model for Sales Volume: ")
@@ -29,13 +29,13 @@ st.markdown("**Criteria for model selection**: 80-20 training-test split and eva
 st.write('After using a spearman rank correlation matrix, a threshold of 0.72 was used to filter out relevant features:\n[Selling Value, Milk Procurement, Per Capita Income in Selling States, Prior CPI, Real PCI INR, Milk Prodution in Procurement States]')
 st.write("After running a grid search over all possible external variable combinations and different orders for each combination, the best model was: ")
 st.write("SARIMA(0,1,1)x(0,0,1,4) with the only exogenous variable of use being 'Selling value (per Lt in Rs)'. The order indicates that moving averages were a better indicator of forecast than auto regression.")
-st.image("Images\Best Sales Volume Model.png",caption="Testing of the abovementioned model")
+st.image("Images/Best Sales Volume Model.png",caption="Testing of the abovementioned model")
 
 #Selling value: Idea, statisitcs, plots and models
 st.header("Selling Value (per Lt in Rs)")
 st.write("The next step for demand forecasting was to find the best model for prediciting Selling Value")
 st.subheader("The dateset for sales volume prediction: ")
-df2 = pd.read_csv("Datasets\Selling Value.csv")
+df2 = pd.read_csv("Datasets/Selling Value.csv")
 df2 = df2.drop('Health Conciousness',axis = 1)
 st.table(df2.head())
 st.write('You may notice a difference from the sales volume database, i.e of the lagged variables.')
@@ -54,8 +54,8 @@ st.markdown("**Criteria for model selection**: No test-training split this time,
 st.write('After using a spearman rank correlation matrix, a threshold of 0.7 was used to filter out relevant features:\n[Lagged Selling Value, Lagged Procurement Values, Procurement Value, Inflation (CPI), Per Capita Income in Selling States,Prior CPI, Lagged Milk Production, Milk Prodution in Procurement States]')
 st.write("After running a grid search over all possible external variable combinations and different orders for each combination, the best model was: ")
 st.write("ARIMA(1,1,0) with the exogenous variables of use being all the 8 variables above the threshold. The order indicates autoregression was a better forecaster")
-st.image("Images\Selling Value Best Model.png",caption="Predicitions of the abovementioned model")
-st.image("Images\Selling Value Predictions vs Actual.png",caption="Actual vs Selling Value, along with forecast.")
+st.image("Images/Selling Value Best Model.png",caption="Predicitions of the abovementioned model")
+st.image("Images/Selling Value Predictions vs Actual.png",caption="Actual vs Selling Value, along with forecast.")
 st.write("The predictions stick very close to the actual values, depicting some sort of overfitting. This is the model of use as of now, until further experimentations.")
 
 #How did we predict 4 regressors of selling value
@@ -69,7 +69,7 @@ st.image('Images/Procurement Values.png',caption='Augmented Dickey Fuller test s
 st.write("We can also see some seasonality at the peaks.")
 st.write("Model used was chosen using a training and test split of 80-20, the model with the least RMSE of the test split was used.")
 st.write('Best Model: SARIMA(1,0,0)x(0,0,1,4). The autoregression parameter of ARIMA was chosen after looking at the PACF plot for the series.')
-st.image('Images\Procurement Values PACF Plot.png',caption='PACF Plot')
+st.image('Images/Procurement Values PACF Plot.png',caption='PACF Plot')
 st.write('The seasonal order was chosen after a grid search.')
 df5 = pd.DataFrame({'Date':['2024-25 Q1','2024-25 Q2','2024-25 Q3','2024-25 Q4'],
                     'Procurement Value (per Lt in Rs)': ['43.3','43.3','41.8','42.2']})
@@ -79,11 +79,11 @@ st.table(df5)
 #Inflation
 st.subheader("2) Inflation(CPI)")
 st.write("A SARIMA(4,2,4)x(0,0,1,8) model was used here for forecasting inflation")
-st.image('Images\CPI Second Difference Stationarity.png',caption='Tail end of CPI stationarity, achieved at a second difference')
-st.image('Images\CPI ACF_PACF Second_Diff.png',caption='PACF and ACF plot for CPI, at difference = 2')
+st.image('Images/CPI Second Difference Stationarity.png',caption='Tail end of CPI stationarity, achieved at a second difference')
+st.image('Images/CPI ACF_PACF Second_Diff.png',caption='PACF and ACF plot for CPI, at difference = 2')
 st.write('Due to strong spikes at lag 4 in both PACF and ACF, p and q were chosen to be 4. Seasonal order=(0,0,1,8) was chosen after experimentation.')
 st.write("CPI model fit: ")
-st.image('Images\CPI model fit.png',caption='Actual vs Predicted CPI along with forecasts')
+st.image('Images/CPI model fit.png',caption='Actual vs Predicted CPI along with forecasts')
 df6 = pd.DataFrame({'Date':['2024-25 Q1','2024-25 Q2','2024-25 Q3','2024-25 Q4'],
                     'Infaltion (CPI)': ['153.14','155.06','158.19','159.28']})
 st.write("Forecasted CPI:")
@@ -110,7 +110,7 @@ st.table(df7.tail())
 st.write("Note: Telangana and Andhra was merged due to missing values before 2015.")
 st.write('Data from 2001 to 2022 was present. Data for 2023 and 2024 had to be predicted, but a rolling forecast was not used.')
 st.image("Images/Punjab Milk Production Stationarity.png",caption="Example: Stationarity achieved at differencing 1 for Punjab. All states except UP (d=0) have the same d value of 1.")
-st.image("Images\Punjab Milk Production ACF_PACF Plot.png", caption="Example: Punjab's ACF-PACF plot")
+st.image("Images/Punjab Milk Production ACF_PACF Plot.png", caption="Example: Punjab's ACF-PACF plot")
 
 st.write("Orders of each state: ")
 df8 =  pd.DataFrame({
@@ -136,7 +136,7 @@ st.write("Note: Annual production was divided by 4 for Quarter to Quarter mappin
 #Per Capita Income in Selling States
 st.subheader("4) Per Capita Income")
 st.write("To predict, per capita income in the selling states, Holt-Linear exponential smoothing was used, due to insignificant ACF-PACF plots of each state.")
-st.image("Images\Delhi PCI ACF_PACF Plot.png",caption="Example: Delhi's ACF_PACF plot, other states followed the same pattern")
+st.image("Images/Delhi PCI ACF_PACF Plot.png",caption="Example: Delhi's ACF_PACF plot, other states followed the same pattern")
 st.write("Exponential Smoothing allows you to predict future values, based on previous values with the help of an 'alpha' parameter that ranges from 0 to 1 and the higher it is, the higher the weightage for recent values.")
 st.write("Holt Linear exponential smoothing allows us to use the properties of long term trend as well, something which is generally seen in per capita incomes.")
 df10 = pd.DataFrame({
