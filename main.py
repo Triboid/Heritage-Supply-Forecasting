@@ -4,17 +4,17 @@ df1 = pd.read_csv("Datasets/Sales Volume.csv")
 
 # Page Header and motive of supply side forecasting
 st.markdown("<h1 style='text-align: center;'>Supply Side Forecasting</h1>", unsafe_allow_html=True)
-st.subheader("The first step towards forecasting the supply, is to forecast demand")
+st.subheader("The first step towards forecasting the supply, is to forecast demand.")
 st.write("For Heritage, the first plan of action was to predict sales volume of milk for the next 4 quarters.")
 
 #Sales Volume statistics, plots and predicitons
 
 st.header("Sales Volume (in MLPD)")
 st.subheader("The dateset for sales volume prediction: ")
-st.write("You can find the logic for each column in the Heritage Foods presentation")
+st.write("You can find the logic for each column in the Heritage Foods presentation.")
 df1 = df1.drop('Health Conciousness',axis = 1)
 st.table(df1.head())
-st.write("The dataset has a total of 12 entries")
+st.write("The dataset has a total of 12 entries.")
 
 #Important plots for sales volume
 st.subheader("Important plots for Sales Volume: ")
@@ -23,7 +23,7 @@ st.image("Images/Sales Volume Stationarity.png",caption='We can see stationarity
 
 #Model for Sales Volume
 st.subheader("Model for Sales Volume: ")
-st.write("Due to seasonality and stationarity, we decided to go with Seasonal ARIMA with exogenous(external) variables")
+st.write("Due to seasonality and stationarity, we decided to go with Seasonal ARIMA with exogenous(external) variables.")
 
 st.markdown("**Criteria for model selection**: 80-20 training-test split and evaluting RMSE for test data. The minimum RMSE model was chosen.")
 st.write('After using a spearman rank correlation matrix, a threshold of 0.72 was used to filter out relevant features:\n[Selling Value, Milk Procurement, Per Capita Income in Selling States, Prior CPI, Real PCI INR, Milk Prodution in Procurement States]')
@@ -48,14 +48,14 @@ st.image('Images/Selling Value First Diff Stationarity.png',caption="Stationarit
 
 #Model for selling value
 st.subheader("Model for Selling Value: ")
-st.write("Due presence of stationarity and no seasonality, this time the model to be used was ARIMA with exogenous variables (ARIMAX)")
+st.write("Due presence of stationarity and no seasonality, this time the model to be used was ARIMA with exogenous variables (ARIMAX).")
 
 st.markdown("**Criteria for model selection**: No test-training split this time, used all 12 datarows for training and calculated RMSE using model's prediction on exisiting data vs actual values. The minimum RMSE model was chosen.")
 st.write('After using a spearman rank correlation matrix, a threshold of 0.7 was used to filter out relevant features:\n[Lagged Selling Value, Lagged Procurement Values, Procurement Value, Inflation (CPI), Per Capita Income in Selling States,Prior CPI, Lagged Milk Production, Milk Prodution in Procurement States]')
 st.write("After running a grid search over all possible external variable combinations and different orders for each combination, the best model was: ")
-st.write("ARIMA(1,1,0) with the exogenous variables of use being all the 8 variables above the threshold. The order indicates autoregression was a better forecaster")
+st.write("ARIMA(1,1,0) with the exogenous variables of use being all the 8 variables above the threshold. The order indicates autoregression was a better forecaster.")
 st.image("Images/Selling Value Best Model.png",caption="Predicitions of the abovementioned model")
-st.image("Images/Selling Value Predictions vs Actual.png",caption="Actual vs Selling Value, along with forecast.")
+st.image("Images/Selling Value Predictions vs Actual.png",caption="Actual vs Selling Value, along with forecast")
 st.write("The predictions stick very close to the actual values, depicting some sort of overfitting. This is the model of use as of now, until further experimentations.")
 
 #How did we predict 4 regressors of selling value
@@ -88,7 +88,7 @@ df6 = pd.DataFrame({'Date':['2024-25 Q1','2024-25 Q2','2024-25 Q3','2024-25 Q4']
                     'Infaltion (CPI)': ['153.14','155.06','158.19','159.28']})
 st.write("Forecasted CPI:")
 st.table(df6)
-st.write("Note: First quarter CPI was already published")
+st.write("Note: First quarter CPI for 2024-25 was already published.")
 
 #Milk Production in selling states
 st.subheader("3) Milk Production in Procuring States")
@@ -109,7 +109,7 @@ df7 = pd.DataFrame( {
 st.table(df7.tail())
 st.write("Note: Telangana and Andhra was merged due to missing values before 2015.")
 st.write('Data from 2001 to 2022 was present. Data for 2023 and 2024 had to be predicted, but a rolling forecast was not used.')
-st.image("Images/Punjab Milk Production Stationarity.png",caption="Example: Stationarity achieved at differencing 1 for Punjab. All states except UP (d=0) have the same d value of 1.")
+st.image("Images/Punjab Milk Production Stationarity.png",caption="Example: Stationarity achieved at a differencing of 1 for Punjab. All states except UP (d=0) have the same d value of 1")
 st.image("Images/Punjab Milk Production ACF_PACF Plot.png", caption="Example: Punjab's ACF-PACF plot")
 
 st.write("Orders of each state: ")
@@ -131,7 +131,7 @@ df9 = pd.DataFrame({'Year':['2023-24','2024-25'],
     })
 
 st.table(df9)
-st.write("Note: Annual production was divided by 4 for Quarter to Quarter mapping")
+st.write("Note: Annual production was divided by 4 for Quarter to Quarter mapping.")
 
 #Per Capita Income in Selling States
 st.subheader("4) Per Capita Income")
@@ -168,8 +168,8 @@ df11 = {
     ]
 }
 st.table(df11)
-st.markdown(f"Average PCI came out be at INR **293,436**")
-st.write("Note: Annual PCI was divided by 4 for Quarter to Quarter mapping")
+st.markdown(f"Average PCI came out be at INR **293,436**.")
+st.write("Note: Annual PCI was divided by 4 for Quarter to Quarter mapping.")
 
 
 #Selling Value Predictions
