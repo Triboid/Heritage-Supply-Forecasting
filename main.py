@@ -109,7 +109,8 @@ df7 = pd.DataFrame( {
 st.table(df7.tail())
 st.write("Note: Telangana and Andhra was merged due to missing values before 2015.")
 st.write('Data from 2001 to 2022 was present. Data for 2023 and 2024 had to be predicted, but a rolling forecast was not used.')
-st.image("Images\Punjab Milk Production ACF_PACF Plot.png", caption="An example of Punjab's ACF-PACF plot")
+st.image("Images/Punjab Milk Production Stationarity.png",caption="Example: Stationarity achieved at differencing 1 for Punjab. All states except UP (d=0) have the same d value of 1.")
+st.image("Images\Punjab Milk Production ACF_PACF Plot.png", caption="Example: Punjab's ACF-PACF plot")
 
 st.write("Orders of each state: ")
 df8 =  pd.DataFrame({
