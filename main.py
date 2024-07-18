@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-df1 = pd.read_csv("Datasets\Sales Volume.csv")
+df1 = pd.read_csv("Datasets/Sales Volume.csv")
 
 # Page Header and motive of supply side forecasting
 st.markdown("<h1 style='text-align: center;'>Supply Side Forecasting</h1>", unsafe_allow_html=True)
