@@ -53,7 +53,7 @@ st.write("Due presence of stationarity and no seasonality, this time the model t
 st.markdown("**Criteria for model selection**: No test-training split this time, used all 12 datarows for training and calculated RMSE using model's prediction on exisiting data vs actual values. The minimum RMSE model was chosen.")
 st.write('After using a spearman rank correlation matrix, a threshold of 0.7 was used to filter out relevant features:\n[Lagged Selling Value, Lagged Procurement Values, Procurement Value, Inflation (CPI), Per Capita Income in Selling States,Prior CPI, Lagged Milk Production, Milk Prodution in Procurement States]')
 st.write("After running a grid search over all possible external variable combinations and different orders for each combination, the best model was: ")
-st.write("ARIMA(1,1,0) with the exogenous variables of use being all the 8 variables above the threshold. The order indicates autoregression was a better forecaster.")
+st.write("ARIMA(0,1,0) with the exogenous variables of use being all the 8 variables above the threshold. The order indicates that the model is a random walk model, which means that immediate last value and external variables are the best regressors.")
 st.image("Images/Selling Value Best Model.png",caption="Predicitions of the abovementioned model")
 st.image("Images/Selling Value Predictions vs Actual.png",caption="Actual vs Selling Value, along with forecast")
 st.write("The predictions stick very close to the actual values, depicting some sort of overfitting. This is the model of use as of now, until further experimentations.")
