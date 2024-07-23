@@ -70,7 +70,7 @@ st.write("We can also see some seasonality at the peaks.")
 st.write("Model used was chosen using a training and test split of 80-20, the model with the least RMSE of the test split was used.")
 st.write('Best Model: SARIMA(1,0,0)x(1,0,1,4). The autoregression parameter of ARIMA was chosen after looking at the PACF plot for the series.')
 st.image('Images/Procurement Values PACF Plot.png',caption='PACF Plot')
-st.image('Images/Actual vs Predicted with Forecast with m = 4.png',caption="Actual Vs Predicted values along with forecast")
+st.image('Images/Actual vs Predicted with Forecast with m = 4.png',caption="Actual vs Predicted values along with forecasted values")
 st.write('The seasonal order was chosen after a grid search.')
 df5 = pd.DataFrame({'Date':['2024-25 Q1','2024-25 Q2','2024-25 Q3','2024-25 Q4'],
                     'Procurement Value (per Lt in Rs)': ['43.3','43.3','41.8','42.2']})
