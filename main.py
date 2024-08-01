@@ -219,7 +219,7 @@ st.write("The first experiment was to predict procurement numbers using only pas
 st.write("This was done first done using 12 quarters and then 20 quarters and the results of the latter were much better than the former, and hence the rationale behind choosing 20 quarters for supply side forecasting.")
 st.write("We shall only discuss the result for the model made using 20 quarters.")
 
-st.image('Images/ACF_PACF Plot with d=2.png',caption= 'ACF-PACF plot of procurement at d=2')
+st.image('Images/ACF_PACF Plot with d = 2.png',caption= 'ACF-PACF plot of procurement at d=2')
 st.write('Looking at the ACF Plot, we do not see any significant spikes after lag 1 and therefore seasonality is not on the charts. We can also see that there are 4 usable lags in the PACF plot.')
 st.write('After various experimentations, it was clear that this data was could not mapped using moving averages, but only using autoregression. The best model came out to be **ARIMA(4,2,0)**.')
 
