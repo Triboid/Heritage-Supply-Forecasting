@@ -242,7 +242,7 @@ st.write("For strong correlation, only 4 points were dropped, for striking a bal
 
 st.image("Images/Pearson for Milk Procurement for external variables.png",caption = 'Pearson correlation for the dataset')
 st.write("After using a pearson correlation matrix, a threshold of 0.7 was used to filter out relevant features: ['Procurement Value (per Lt in Rs)', 'Sale Volume (in MLPD)', 'Milk for VAP', 'Selling Value (per Lt in Rs)', 'Prior CPI', 'Inflation (CPI)', 'Per Capita Income in Selling States (INR Quarter Wise)', 'Calculated Milk Revenue (Inr MLN)', 'Milk Prodution in Procurement States (1000 Tonnes)', 'Seasonality: VAP Sales (Millions INR)']")
-st.write("We further dropped the following variables: ['Seasonality: VAP Sales (Millions INR)', 'Calculated Milk Revenue (Inr MLN)', 'Milk for VAP', 'Prior CPI']. The first three variables are a consequent of procurement volume and not the other way around and Prior CPI was dropped to reduce number of variables to prevent overfitting.")
+st.write("We further dropped the following variables: ['Seasonality: VAP Sales (Millions INR)', 'Milk for VAP', 'Prior CPI']. The first three variables are a consequent of procurement volume and not the other way around and Prior CPI was dropped to reduce number of variables to prevent overfitting.")
 st.write("After running a grid search over all possible external variable combinations and different orders for each combination, the best model was: ")
 st.write("ARIMA: (1,2,0) with external variables of use being ['Procurement Value (per Lt in Rs)', 'Selling Value (per Lt in Rs)']. Once again, we got a an autoregression model with d = 2.")
 st.image("Images/Milk Procurement ARIMAX Best Model.png", caption='Testing of the above mentioned model')
