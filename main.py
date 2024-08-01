@@ -219,7 +219,7 @@ st.write("The first experiment was to predict procurement numbers using only pas
 st.write("This was done first done using 12 quarters and then 20 quarters and the results of the latter were much better than the former, and hence the rationale behind choosing 20 quarters for supply side forecasting.")
 st.write("We shall only discuss the result for the model made using 20 quarters.")
 
-st.image('Images/ACF_PACF Plot with d = 2.png',caption= 'ACF-PACF plot of procurement at d=2')
+st.image('Images/ACF_PACF Plot with d=2.png',caption= 'ACF-PACF plot of procurement at d=2')
 st.write('Looking at the ACF Plot, we do not see any significant spikes after lag 1 and therefore seasonality is not on the charts. We can also see that there are 4 usable lags in the PACF plot.')
 st.write('After various experimentations, it was clear that this data was could not mapped using moving averages, but only using autoregression. The best model came out to be **ARIMA(4,2,0)**.')
 
@@ -233,8 +233,37 @@ st.table(df13)
 st.write("We can see that this model accurately predicts the procurment number for the first quarter of 24-25.")
 
 st.subheader('2) Exogenous model with external variables (ARIMAX)')
-st.write("The second experiment was to use the external variables that were selected to be a part of the dataset. An ARIMAX model was used here")
+st.write("The second experiment was to use the external variables that were selected to be a part of the dataset. An ARIMAX model was used here.")
 st.markdown("**Criteria for model selection**: 80-20 training-test split of the last 17 (out of 21) quarters and evaluting RMSE for both training and test data. However, the model was chosen by looking at minimum test RMSE.")
 st.write("You may have noticed that we did not use all 21 quarters here. The reason lies in correlation. Due to U-shaped graphs of the historical data, were unable to see strong linear(pearson) correlation. Similiarly, spearman ranked correlation also failed to provide us with strong values. Therefore, only the past 17 quarters were used, starting from the covid year, which in visualization give us a strong upward.")
+
+st.image('Images/Milk Procurement volume from 2020-21 to Q1 2024-25.png',caption = 'Instead of 6 points for the left side of the U-shape, now we have 2')
+st.write("For strong correlation, only 4 points were dropped, for striking a balance between number of data points and the trimming of the U-shape.")
+
+st.image("Images/Pearson for Milk Procurement for external variables.png",caption = 'Pearson correlation for the dataset')
+st.write("After using a pearson correlation matrix, a threshold of 0.7 was used to filter out relevant features: ['Procurement Value (per Lt in Rs)', 'Sale Volume (in MLPD)', 'Milk for VAP', 'Selling Value (per Lt in Rs)', 'Prior CPI', 'Inflation (CPI)', 'Per Capita Income in Selling States (INR Quarter Wise)', 'Calculated Milk Revenue (Inr MLN)', 'Milk Prodution in Procurement States (1000 Tonnes)', 'Seasonality: VAP Sales (Millions INR)']")
+st.write("We further dropped the following variables: ['Seasonality: VAP Sales (Millions INR)', 'Calculated Milk Revenue (Inr MLN)', 'Milk for VAP', 'Prior CPI']. The first three variables are a consequent of procurement volume and not the other way around and Prior CPI was dropped to reduce number of variables to prevent overfitting.")
+st.write("After running a grid search over all possible external variable combinations and different orders for each combination, the best model was: ")
+st.write("ARIMA: (1,2,0) with external variables of use being ['Procurement Value (per Lt in Rs)', 'Selling Value (per Lt in Rs)']. Once again, we got a an autoregression model with d = 2.")
+st.image("Images/Milk Procurement ARIMAX Best Model.png", caption='Testing of the above mentioned model')
+
+df14 = pd.DataFrame({'Date':['2024-25 Q2','2024-25 Q3','2024-25 Q4'],
+                    'Selling Value (per Lt in Rs)': ['55.39','56.41','55.9'],
+                    'Procurement Value (per Lt in Rs)': ['39.73','39.03','37.95']})
+st.write("Values of external variables being used: ")
+st.table(df14)
+
+df15 = pd.DataFrame({'Date':['2024-25 Q2','2024-25 Q3','2024-25 Q4'],
+                    'Milk Procurement (in MLPD)': ['1.58','1.6','1.55']})
+
+st.write("Forecasted values:")
+st.table(df15)
+
+
+
+
+
+
+
 
 

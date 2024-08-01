@@ -14,6 +14,6 @@ data1 = data.diff()[1:].diff()[1:]
 
 plt.plot(data[4:],label= 'Milk Procurement (in MLPD)')
 plt.xticks(np.arange(5, 22, step=1))
-plt.title('Milk Procurement volume from 2019-20 to Q1 2024-25')
+plt.title('Milk Procurement volume from 2020-21 to Q1 2024-25')
 plt.legend()
 plt.show()
