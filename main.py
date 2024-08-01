@@ -190,3 +190,51 @@ df4 = pd.DataFrame({'Date':['2024-25 Q1','2024-25 Q2','2024-25 Q3','2024-25 Q4']
                     'Selling Value (per Lt in Rs)': ['56.17','55.7','56.68','55.81'],
                     'Sales Volume (in MLPD)': ['1.1151','1.121864','1.13333','1.125221']})
 st.table(df4)
+
+#Header for supply-side-forecasting
+st.header("Now that we have forecasted demand, we shall move towards supply side forecasting")
+st.write("We are now going to forecast Heritage's milk procurement for the next 4 (3) quarters.")
+
+#Milk Procurement statistics, plots and predicitons
+
+st.header("Milk Procurement (in MLPD)")
+st.subheader("The dateset for milk procurement prediction: ")
+df12 = pd.read_csv("Datasets/Milk Procurement.csv")
+
+st.table(df12.tail())
+st.write("The dataset has a total of 21 entries. This is a change from last time, where we only chose 12 quarters, the reason for which will be discussed later.")
+st.write('The first 20 data points start from 2019-20 and end with 2023-24. The 21st point is from the first quarter of 2024-25, which came out recently.')
+st.write("Once again, you can find the logic for each column in the Heritage Foods presentation.")
+
+#Important plots for Milk Procurement
+st.subheader("Important plot for Milk Procurement:")
+st.image('Images/Milk Procurement vs Quarters.png',caption="Plot for Milk Procurement")
+st.image('Images/Milk Procurement Stationarity.png',caption='Stationarity achieved for Milk Procurement at d = 2')
+
+#Models for Milk Procurement
+
+st.subheader('Models for Milk Procurement: ')
+st.subheader("1)Endogenous Model (ARIMA): ")
+st.write("The first experiment was to predict procurement numbers using only past values and no external variables.")
+st.write("This was done first done using 12 quarters and then 20 quarters and the results of the latter were much better than the former, and hence the rationale behind choosing 20 quarters for supply side forecasting.")
+st.write("We shall only discuss the result for the model made using 20 quarters.")
+
+st.image('Images/ACF_PACF Plot with d = 2.png',caption= 'ACF-PACF plot of procurement at d=2')
+st.write('Looking at the ACF Plot, we do not see any significant spikes after lag 1 and therefore seasonality is not on the charts. We can also see that there are 4 usable lags in the PACF plot.')
+st.write('After various experimentations, it was clear that this data was could not mapped using moving averages, but only using autoregression. The best model came out to be **ARIMA(4,2,0)**.')
+
+df13 = pd.DataFrame({'Date':['2024-25 Q1','2024-25 Q2','2024-25 Q3','2024-25 Q4'],
+                    'Milk Procurement (in MLPD)': ['1.62','1.69','1.69','1.77']})
+
+st.image("Images/Milk Procurement Endogenous wo Split.png",caption= "Model predictions on the training split")
+st.image("Images/Milk Procurement Endogenous with Split.png",caption="Model predictions and forecasting after a Train-Test split")
+st.write("Forecasted values:")
+st.table(df13)
+st.write("We can see that this model accurately predicts the procurment number for the first quarter of 24-25.")
+
+st.subheader('2) Exogenous model with external variables (ARIMAX)')
+st.write("The second experiment was to use the external variables that were selected to be a part of the dataset. An ARIMAX model was used here")
+st.markdown("**Criteria for model selection**: 80-20 training-test split of the last 17 (out of 21) quarters and evaluting RMSE for both training and test data. However, the model was chosen by looking at minimum test RMSE.")
+st.write("You may have noticed that we did not use all 21 quarters here. The reason lies in correlation. Due to U-shaped graphs of the historical data, were unable to see strong linear(pearson) correlation. Similiarly, spearman ranked correlation also failed to provide us with strong values. Therefore, only the past 17 quarters were used, starting from the covid year, which in visualization give us a strong upward.")
+
+
