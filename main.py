@@ -214,7 +214,9 @@ st.image('Images/Milk Procurement Stationarity.png',caption='Stationarity achiev
 #Models for Milk Procurement
 
 st.subheader('Models for Milk Procurement: ')
-st.subheader("1)Endogenous Model (ARIMA): ")
+
+#First model
+st.subheader("1) Endogenous Model (ARIMA): ")
 st.write("The first experiment was to predict procurement numbers using only past values and no external variables.")
 st.write("This was done first done using 12 quarters and then 20 quarters and the results of the latter were much better than the former, and hence the rationale behind choosing 20 quarters for supply side forecasting.")
 st.write("We shall only discuss the result for the model made using 20 quarters.")
@@ -232,6 +234,7 @@ st.write("Forecasted values:")
 st.table(df13)
 st.write("We can see that this model accurately predicts the procurment number for the first quarter of 24-25.")
 
+#Second Model
 st.subheader('2) Exogenous model with external variables (ARIMAX)')
 st.write("The second experiment was to use the external variables that were selected to be a part of the dataset. An ARIMAX model was used here.")
 st.markdown("**Criteria for model selection**: 80-20 training-test split of the last 17 (out of 21) quarters and evaluting RMSE for both training and test data. However, the model was chosen by looking at minimum test RMSE.")
@@ -242,10 +245,12 @@ st.write("For strong correlation, only 4 points were dropped, for striking a bal
 
 st.image("Images/Pearson for Milk Procurement for external variables.png",caption = 'Pearson correlation for the dataset')
 st.write("After using a pearson correlation matrix, a threshold of 0.7 was used to filter out relevant features: ['Procurement Value (per Lt in Rs)', 'Sale Volume (in MLPD)', 'Milk for VAP', 'Selling Value (per Lt in Rs)', 'Prior CPI', 'Inflation (CPI)', 'Per Capita Income in Selling States (INR Quarter Wise)', 'Calculated Milk Revenue (Inr MLN)', 'Milk Prodution in Procurement States (1000 Tonnes)', 'Seasonality: VAP Sales (Millions INR)']")
-st.write("We further dropped the following variables: ['Seasonality: VAP Sales (Millions INR)', 'Milk for VAP', 'Prior CPI']. The first three variables are a consequent of procurement volume and not the other way around and Prior CPI was dropped to reduce number of variables to prevent overfitting.")
+st.write("We further dropped the following variables: ['Seasonality: VAP Sales (Millions INR)', 'Milk for VAP', 'Prior CPI']. The first two variables are a consequent of procurement volume and not the other way around and Prior CPI was dropped to reduce number of variables to prevent overfitting.")
 st.write("After running a grid search over all possible external variable combinations and different orders for each combination, the best model was: ")
-st.write("ARIMA: (1,2,0) with external variables of use being ['Procurement Value (per Lt in Rs)', 'Selling Value (per Lt in Rs)']. Once again, we got a an autoregression model with d = 2.")
+st.write("ARIMA: (1,2,0) with external variables of use being ['Procurement Value (per Lt in Rs)', 'Selling Value (per Lt in Rs)']. Once again, we got an autoregression model with d = 2.")
 st.image("Images/Milk Procurement ARIMAX Best Model.png", caption='Testing of the above mentioned model')
+st.image("Images/Milk Procurement Best Model Plot.png",caption='Model predictions and forecasting after a Train-Test split')
+
 
 df14 = pd.DataFrame({'Date':['2024-25 Q2','2024-25 Q3','2024-25 Q4'],
                     'Selling Value (per Lt in Rs)': ['55.39','56.41','55.9'],
@@ -259,11 +264,38 @@ df15 = pd.DataFrame({'Date':['2024-25 Q2','2024-25 Q3','2024-25 Q4'],
 st.write("Forecasted values:")
 st.table(df15)
 
+df16 = pd.read_csv('Datasets/Lagged Milk Procurement.csv')
+st.subheader('3) Exogenous model with lagged external variables (ARIMAX)')
+st.write("The third experiment was to add lagged variables to the master dataset to understand the effect that some of these variables may have in the future.")
 
+st.write('A few rows of the dataset for this model:')
+st.table(df16.tail())
 
+st.write("Why did we select different lags for each variable? The answer for this come from the Granger Cauality test.")
+st.write("The Granger causality test allows to see if we can use past values of one time series to predict future values of a target time series")
 
+st.image("Images/Granger Causality.png",caption= "Using one time series to forecast another time series. Src: Wikipedia")
+st.image("Images/VAR.png",caption = "A Vector Auto Regression may be fitted for a multivariate model and Granger Causality test may be used there to check the validity of those lagged variables. Src: ritvikmath@YouTube")
 
+st.write("When we did the Granger causality test for Milk Procurement and the other variables, we found that only certain lags were useful for forecasting. Although the VAR model didn't prove to be useful, we got this insight for lagged variables.")
+st.write("The criteria for model selection is same as the last one and we only used the last 17 quarters for model making due to reasons explained before.")
 
+st.image('Images/Lagged Milk Procurement Spearman.png',caption='Spearman rank correlation for this model')
+st.write("After using a spearman rank correlation, a threshold of 0.7 to filter out the relevant feature: ['Lag 2 Procurement', 'Lag 1 Procurement', 'Lagged Sales Volume', 'Sale Volume (in MLPD)', 'Lagged Selling Value', 'Selling Value (per Lt in Rs)', 'Lag 2 CPI', 'Lag 1 CPI', 'Inflation (CPI)', 'Per Capita Income in Selling States (INR Quarter Wise)', 'Lagged Milk Production', 'Milk Prodution in Procurement States (1000 Tonnes)']")
+st.write("After running a grid search over all possible external variable combinations and different orders for each combination, the best model was: ")
+st.write("ARIMA: (1,2,0) with external variables of use being ['Lag 2 Procurement', 'Lagged Sales Volume', 'Selling Value (per Lt in Rs)', 'Lag 2 CPI', 'Inflation (CPI)', 'Per Capita Income in Selling States (INR Quarter Wise)']. Once again, we got an autoregression model with d = 2.")
 
+st.image("Images/Lagged Milk Procurement Best Model.png",caption= "Testing of the above mentioned model")
+st.image("Images/Lagged Milk Procurement Best Model Plot.png",caption='Model predictions and forecasting after a Train-Test split')
+
+df17 = pd.read_csv('Datasets/Lagged Milk Procurement Predictions.csv')
+st.write("Values of external variables being used: ")
+st.table(df17)
+
+df18 = pd.DataFrame({'Date':['2024-25 Q2','2024-25 Q3','2024-25 Q4'],
+                    'Milk Procurement (in MLPD)': ['1.58','1.53','1.56']})
+
+st.write("Forecasted values:")
+st.table(df18)
 
 
