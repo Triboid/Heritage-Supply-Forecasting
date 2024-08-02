@@ -25,7 +25,7 @@ st.image("Images/Sales Volume Stationarity.png",caption='We can see stationarity
 st.subheader("Model for Sales Volume: ")
 st.write("Due to seasonality and stationarity, we decided to go with Seasonal ARIMA with exogenous(external) variables.")
 
-st.markdown("**Criteria for model selection**: 80-20 training-test split and evaluting RMSE for test data. The minimum RMSE model was chosen.")
+st.markdown("**Criteria for model selection**: 80-20 training-test split and evaluating RMSE for test data. The minimum RMSE model was chosen.")
 st.write('After using a spearman rank correlation matrix, a threshold of 0.72 was used to filter out relevant features:\n[Selling Value, Milk Procurement, Per Capita Income in Selling States, Prior CPI, Real PCI INR, Milk Prodution in Procurement States]')
 st.write("After running a grid search over all possible external variable combinations and different orders for each combination, the best model was: ")
 st.write("SARIMA(0,1,1)x(0,0,1,4) with the only exogenous variable of use being 'Selling value (per Lt in Rs)'. The order indicates that moving averages were a better indicator of forecast than auto regression.")
@@ -33,7 +33,7 @@ st.image("Images/Best Sales Volume Model.png",caption="Testing of the abovementi
 
 #Selling value: Idea, statisitcs, plots and models
 st.header("Selling Value (per Lt in Rs)")
-st.write("The next step for demand forecasting was to find the best model for prediciting Selling Value")
+st.write("The next step for demand forecasting was to find the best model for predicting selling value.")
 st.subheader("The dateset for sales volume prediction: ")
 df2 = pd.read_csv("Datasets/Selling Value.csv")
 df2 = df2.drop('Health Conciousness',axis = 1)
@@ -66,14 +66,13 @@ st.subheader('To predict selling value, we need to forecast its regressors first
 st.subheader("1) Procurement Value")
 st.write("We tried looking at an endogenous SARIMA Model for Procurement Values:")
 st.image('Images/Procurement Values.png',caption='Augmented Dickey Fuller test says the series is stationary with the chance of it being a fluke at 5%')
-st.write("We can also see some seasonality at the peaks.")
+st.write("We can see some seasonality at the peaks.")
 st.write("Model used was chosen using a training and test split of 80-20, the model with the least RMSE of the test split was used.")
-st.write('Best Model: SARIMA(1,0,0)x(1,0,1,4). The autoregression parameter of ARIMA was chosen after looking at the PACF plot for the series.')
-st.image('Images/Procurement Values PACF Plot.png',caption='PACF Plot')
-st.image('Images/Actual vs Predicted with Forecast with m = 4.png',caption="Actual vs Predicted values along with forecasts")
-st.write('The seasonal order was chosen after a grid search.')
+st.write('Best Model: SARIMA(1,0,0)x(1,0,1,2). The autoregression parameter of ARIMA was chosen after looking at the PACF plot for the series. The seasonal order was chosen after looking at the original plots oscillations and experimentations.')
+st.image('Images/Procurement Values PACF-ACF Plot.png',caption='PACF-ACF Plot')
+st.image('Images/Procurement Value Actual vs Predicted with Forecast with m = 2.png',caption="Actual vs Predicted values along with forecasts")
 df5 = pd.DataFrame({'Date':['2024-25 Q1','2024-25 Q2','2024-25 Q3','2024-25 Q4'],
-                    'Procurement Value (per Lt in Rs)': ['43.3','43.3','41.8','42.2']})
+                    'Procurement Value (per Lt in Rs)': ['40.99','39.73','39.03','37.95']})
 st.write("Forecasted values:")
 st.table(df5)
 
@@ -179,7 +178,7 @@ st.write("Now that the best model for selling value has been achieved, we need t
 st.write("Predictions were done using a rolling forecast, i.e, once a single forecast is achieved, we put it back in the model for training to get the next forecast.")
 st.write("Using the entire dataset, ARIMA(1,1,0) and regressors: \n [Lagged Selling Value, Lagged Procurement Values, Procurement Value, Inflation (CPI), Per Capita Income in Selling States,Prior CPI, Lagged Milk Production, Milk Prodution in Procurement States], we were able to predict the following values: ")
 df3 = pd.DataFrame({'Date':['2024-25 Q1','2024-25 Q2','2024-25 Q3','2024-25 Q4'],
-                    'Selling Value (per Lt in Rs)': ['56.17','55.7','56.68','55.81']})
+                    'Selling Value (per Lt in Rs)': ['56.5','55.39','56.41','55.9']})
 st.table(df3)
 
 #Sale Volume Predictions
@@ -187,8 +186,8 @@ st.header("Forecasting Sales Volume")
 st.write("Now that selling value has been predicted, we use it to predict sales volume, once again with a rolling forecast.")
 st.write("Using the entire dataset, SARIMA(0,1,1)x(0,0,1,4) with 'Selling Value (per Lt in Rs) as a regressor, we were able to predict the following values: ")
 df4 = pd.DataFrame({'Date':['2024-25 Q1','2024-25 Q2','2024-25 Q3','2024-25 Q4'],
-                    'Selling Value (per Lt in Rs)': ['56.17','55.7','56.68','55.81'],
-                    'Sales Volume (in MLPD)': ['1.1151','1.121864','1.13333','1.125221']})
+                    'Selling Value (per Lt in Rs)': ['56.5','55.39','56.41','55.9'],
+                    'Sales Volume (in MLPD)': ['1.120','1.118','1.127','1.126']})
 st.table(df4)
 
 #Header for supply-side-forecasting
@@ -203,7 +202,7 @@ df12 = pd.read_csv("Datasets/Milk Procurement.csv")
 
 st.table(df12.tail())
 st.write("The dataset has a total of 21 entries. This is a change from last time, where we only chose 12 quarters, the reason for which will be discussed later.")
-st.write('The first 20 data points start from 2019-20 and end with 2023-24. The 21st point is from the first quarter of 2024-25, which came out recently.')
+st.write('The first 20 data points start from 2019-20 and end with 2023-24. The 21st point is from the first quarter of 2024-25, which came out recently. Due to this reveal, we have altered the first quarter of the various predictions that we have already performed.')
 st.write("Once again, you can find the logic for each column in the Heritage Foods presentation.")
 
 #Important plots for Milk Procurement
@@ -218,7 +217,7 @@ st.subheader('Models for Milk Procurement: ')
 #First model
 st.subheader("1) Endogenous Model (ARIMA): ")
 st.write("The first experiment was to predict procurement numbers using only past values and no external variables.")
-st.write("This was done first done using 12 quarters and then 20 quarters and the results of the latter were much better than the former, and hence the rationale behind choosing 20 quarters for supply side forecasting.")
+st.write("This was done first done using 12 quarters and then 20 quarters and the results of the latter were much better than the former (training RMSE of 0.37 vs 0.22), and hence the rationale behind choosing 20 quarters for supply side forecasting.")
 st.write("We shall only discuss the result for the model made using 20 quarters.")
 
 st.image('Images/ACF_PACF Plot with d = 2.png',caption= 'ACF-PACF plot of procurement at d=2')
@@ -232,15 +231,15 @@ st.image("Images/Milk Procurement Endogenous wo Split.png",caption= "Model predi
 st.image("Images/Milk Procurement Endogenous with Split.png",caption="Model predictions and forecasting after a Train-Test split")
 st.write("Forecasted values:")
 st.table(df13)
-st.write("We can see that this model accurately predicts the procurment number for the first quarter of 24-25.")
+st.write("We can see that this model accurately predicts the procurement number for the first quarter of 24-25.")
 
 #Second Model
 st.subheader('2) Exogenous model with external variables (ARIMAX)')
 st.write("The second experiment was to use the external variables that were selected to be a part of the dataset. An ARIMAX model was used here.")
-st.markdown("**Criteria for model selection**: 80-20 training-test split of the last 17 (out of 21) quarters and evaluting RMSE for both training and test data. However, the model was chosen by looking at minimum test RMSE.")
-st.write("You may have noticed that we did not use all 21 quarters here. The reason lies in correlation. Due to U-shaped graphs of the historical data, were unable to see strong linear(pearson) correlation. Similiarly, spearman ranked correlation also failed to provide us with strong values. Therefore, only the past 17 quarters were used, starting from the covid year, which in visualization give us a strong upward.")
+st.markdown("**Criteria for model selection**: 80-20 training-test split of the last 17 (out of 21) quarters and evaluating RMSE for both training and test data. However, the model was chosen by looking at minimum test RMSE.")
+st.write("You may have noticed that we did not use all 21 quarters here. The reason lies in correlation. Due to the U-shaped graphs of the historical data, we were unable to see strong linear (pearson) correlation. Similiarly, spearman ranked correlation also failed to provide us with strong values. Therefore, only the past 17 quarters were used, starting from the covid year, which in visualization give us a strong upward trend.")
 
-st.image('Images/Milk Procurement volume from 2020-21 to Q1 2024-25.png',caption = 'Instead of 6 points for the left side of the U-shape, now we have 2')
+st.image('Images/Milk Procurement volume from 2020-21 to Q1 2024-25.png',caption = 'Instead of 6 points on the left part of the U-shape, we now have 2')
 st.write("For strong correlation, only 4 points were dropped, for striking a balance between number of data points and the trimming of the U-shape.")
 
 st.image("Images/Pearson for Milk Procurement for external variables.png",caption = 'Pearson correlation for the dataset')
@@ -275,9 +274,9 @@ st.write("Why did we select different lags for each variable? The answer for thi
 st.write("The Granger causality test allows to see if we can use past values of one time series to predict future values of a target time series")
 
 st.image("Images/Granger Causality.png",caption= "Using one time series to forecast another time series. Src: Wikipedia")
-st.image("Images/VAR.png",caption = "A Vector Auto Regression may be fitted for a multivariate model and Granger Causality test may be used there to check the validity of those lagged variables. Src: ritvikmath@YouTube")
+st.image("Images/VAR.png",caption = "A Vector Auto Regression (VAR) may be fitted for a multivariate model and Granger Causality test may be used there to check the validity of those lagged variables. Src: ritvikmath@YouTube")
 
-st.write("When we did the Granger causality test for Milk Procurement and the other variables, we found that only certain lags were useful for forecasting. Although the VAR model didn't prove to be useful, we got this insight for lagged variables.")
+st.write("When we did the Granger causality test for Milk Procurement and the other variables, we found that only certain lags were useful for forecasting. Although the VAR model didn't prove to be useful, we were able to get this insight for lagged variables.")
 st.write("The criteria for model selection is same as the last one and we only used the last 17 quarters for model making due to reasons explained before.")
 
 st.image('Images/Lagged Milk Procurement Spearman.png',caption='Spearman rank correlation for this model')
