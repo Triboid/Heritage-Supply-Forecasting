@@ -27,6 +27,7 @@ st.write("Due to seasonality and stationarity, we decided to go with Seasonal AR
 
 st.markdown("**Criteria for model selection**: 80-20 training-test split and evaluating RMSE for test data. The minimum RMSE model was chosen.")
 st.write('After using a spearman rank correlation matrix, a threshold of 0.72 was used to filter out relevant features:\n[Selling Value, Milk Procurement, Per Capita Income in Selling States, Prior CPI, Real PCI INR, Milk Prodution in Procurement States]')
+st.image('Images/Sales Volume Spearman.png',caption='Spearman Correlation for Sales Volume')
 st.write("After running a grid search over all possible external variable combinations and different orders for each combination, the best model was: ")
 st.write("SARIMA(0,1,1)x(0,0,1,4) with the only exogenous variable of use being 'Selling value (per Lt in Rs)'. The order indicates that moving averages were a better indicator of forecast than auto regression.")
 st.image("Images/Best Sales Volume Model.png",caption="Testing of the abovementioned model")
@@ -44,7 +45,7 @@ st.write('Lagged variables allow us to see the effect of previous values on late
 #Plots for Selling Value
 st.subheader('Important plots for selling value')
 st.image('Images/Selling Value.png',caption = "Shows an increasing long term trend with no specific seasonality")
-st.image('Images/Selling Value First Diff Stationarity.png',caption="Stationarity can be seen at the first difference")
+st.image('Images/Selling Value First Diff Stationarity.png',caption="Stationarity was seen at the first difference")
 
 #Model for selling value
 st.subheader("Model for Selling Value: ")
@@ -186,8 +187,11 @@ st.header("Forecasting Sales Volume")
 st.write("Now that selling value has been predicted, we use it to predict sales volume, once again with a rolling forecast.")
 st.write("Using the entire dataset, SARIMA(0,1,1)x(0,0,1,4) with 'Selling Value (per Lt in Rs) as a regressor, we were able to predict the following values: ")
 df4 = pd.DataFrame({'Date':['2024-25 Q1','2024-25 Q2','2024-25 Q3','2024-25 Q4'],
-                    'Selling Value (per Lt in Rs)': ['56.5','55.39','56.41','55.9'],
-                    'Sales Volume (in MLPD)': ['1.120','1.118','1.127','1.126']})
+                    'Predicted Selling Value (per Lt in Rs)': ['56.5','55.39','56.41','55.9'],
+                    'Predicted Sales Volume (in MLPD)': ['1.120','1.118','1.127','1.126'],
+                    'Actual Selling Value (per Lt in Rs)': ['54.81',None,None,None],
+                    'Actual Sales Volume (in MLPD)': ['1.130',None,None,None]})
+                    
 st.table(df4)
 
 #Header for supply-side-forecasting
@@ -231,7 +235,7 @@ st.image("Images/Milk Procurement Endogenous wo Split.png",caption= "Model predi
 st.image("Images/Milk Procurement Endogenous with Split.png",caption="Model predictions and forecasting after a Train-Test split")
 st.write("Forecasted values:")
 st.table(df13)
-st.write("We can see that this model accurately predicts the procurement number for the first quarter of 24-25.")
+st.write("**We can see that this model accurately predicts the procurement number for the first quarter of 24-25.**")
 
 #Second Model
 st.subheader('2) Exogenous model with external variables (ARIMAX)')
